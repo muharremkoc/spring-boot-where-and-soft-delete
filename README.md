@@ -80,3 +80,76 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
 
 
 ![image](https://github.com/user-attachments/assets/8ecfa131-bee4-4dcd-81d4-d62671787114)
+
+
+# Turkish
+
+# Senaryo
+
+Bir kullanıcı yönetim sistemi geliştirdiğimizi varsayalım. Bu sistemde, bir kullanıcıyı doğrudan veritabanından silmek yerine, kullanıcıyı “silindi” olarak işaretlemeyi seçebiliriz. Bu yaklaşım, veritabanında bir silme işlemi gerçekleştirmek yerine, bir `deleted` alanının değerini “true” veya “false” olarak güncelleyerek kullanıcının silindiğini gösterir. Bu yönteme “soft delete” adı verilir.
+
+Sadece silinmemiş kullanıcılarla ilgilenmek istiyorsak ve bu kullanıcıları `Repository` üzerinden sorgulamak istiyorsak, Spring Boot 3'ten itibaren mevcut olan `@SQLRestriction` ek açıklaması (önceki sürümlerde `@Where` olarak bilinir) devreye girer. Bu anotasyon ile sorgularımızda sadece silinmemiş kullanıcıların alınmasını sağlayabiliyoruz.
+
+## Kurulum
+
+- İlk olarak veritabanı kütüphanesi docker-compose yapılandırmasını tanımlıyoruz.
+
+```yaml
+        
+sürüm: '3.8'
+hizmetler:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    yeniden başlatma: her zaman
+    ortam:
+      - MYSQL_DATABASE=userdb
+      - MYSQL_ROOT_PASSWORD=parola
+    Portlar:
+      - '3306:3306'
+```
+
+- İkinci olarak kullanacağımız veritabanı kütüphanesini ve JPA kütüphanesini tanımlıyoruz.
+```xml
+        
+         <bağımlılık>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <kapsam>çalışma zamanı</kapsam>
+        </dependency>
+        <bağımlılık>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+```
+
+- Üçüncü olarak, bu veritabanının gerekli konfigürasyonlarını gerçekleştiriyoruz.
+```properties
+
+##MySQL Yapılandırması
+spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:userdb}?allowPublicKeyRetrieval=true&useSSL=false
+spring.datasource.username=${MYSQL_USERNAME:root}
+spring.datasource.password=${MYSQL_PASSWORD:password}
+
+
+##JPA Konfigürasyonu
+spring.jpa.show-sql=true
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
+
+```
+
+## Yanıtlar
+
+ - SQLRestriction Kullanımı ile
+
+
+![image](https://github.com/user-attachments/assets/a43c6c8f-e825-498b-8432-4fb22cc1bbe5)
+
+
+- SQLRestriction Kullanmama
+
+![image](https://github.com/user-attachments/assets/8ecfa131-bee4-4dcd-81d4-d62671787114)
+
+
