@@ -96,29 +96,29 @@ Sadece silinmemiş kullanıcılarla ilgilenmek istiyorsak ve bu kullanıcıları
 
 ```yaml
         
-sürüm: '3.8'
-hizmetler:
+version: '3.8'
+services:
 
   mysql:
     image: mysql:8.0
     container_name: mysql
-    yeniden başlatma: her zaman
-    ortam:
+    restart: always
+    environment:
       - MYSQL_DATABASE=userdb
-      - MYSQL_ROOT_PASSWORD=parola
-    Portlar:
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
       - '3306:3306'
 ```
 
 - İkinci olarak kullanacağımız veritabanı kütüphanesini ve JPA kütüphanesini tanımlıyoruz.
 ```xml
         
-         <bağımlılık>
+          <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <kapsam>çalışma zamanı</kapsam>
+            <scope>runtime</scope>
         </dependency>
-        <bağımlılık>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
@@ -127,13 +127,13 @@ hizmetler:
 - Üçüncü olarak, bu veritabanının gerekli konfigürasyonlarını gerçekleştiriyoruz.
 ```properties
 
-##MySQL Yapılandırması
+##MySQL Config
 spring.datasource.url=jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:userdb}?allowPublicKeyRetrieval=true&useSSL=false
 spring.datasource.username=${MYSQL_USERNAME:root}
 spring.datasource.password=${MYSQL_PASSWORD:password}
 
 
-##JPA Konfigürasyonu
+##JPA Config
 spring.jpa.show-sql=true
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
