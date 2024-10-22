@@ -66,7 +66,7 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
 ```java
 
 @SQLRestriction(value = "deleted=false")
-//@Where(clause = "active=false") // This annotation is using before Spring Boot 3.x and Java version 17
+//@Where(clause = "deleted=false") // This annotation is using before Spring Boot 3.x and Java version 17
 ```
 ## Responses
 
@@ -152,7 +152,7 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
 ```java
 
 @SQLRestriction(value = “deleted=false”)
-//@Where(clause = “active=false”) // Bu ek açıklama Spring Boot 3.x ve Java sürüm 17'den önce kullanılıyor
+//@Where(clause = “deleted=false”) // Bu ek açıklama Spring Boot 3.x ve Java sürüm 17'den önce kullanılıyor
 ```
 
 
