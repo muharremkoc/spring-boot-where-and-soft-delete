@@ -11,7 +11,7 @@ import org.hibernate.annotations.*;
 @Table(name = "users")
 @SQLDelete(sql = "update users set deleted=true where id=?")
 @SQLRestriction(value = "deleted=false")
-//@Where(clause = "active=false") // This annotation is using before Spring Boot 3.x and Java version 17
+//@Where(clause = "deleted=false") // This annotation is using before Spring Boot 3.x and Java version 17
 public class User {
     @Id
     @GeneratedValue(generator = "uuid")
