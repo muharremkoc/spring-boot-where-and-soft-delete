@@ -140,6 +140,22 @@ spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL8Dialect
 
 ```
 
+## Kullanım
+
+- İlk olarak, silme işlemi üzerinde bir güncelleme işlemi gerçekleştireceğimiz için @SQLDelete ek açıklamasını kullanıyoruz
+
+```java
+@SQLDelete(sql = “update users set deleted=true where id=?”)
+```
+
+- İkinci bir işlem olarak, yalnızca silinmemiş kullanıcıları çekmek istiyorsak, @Where ek açıklamasını kullanırız (İsteğe bağlı)
+```java
+
+@SQLRestriction(value = “deleted=false”)
+//@Where(clause = “active=false”) // Bu ek açıklama Spring Boot 3.x ve Java sürüm 17'den önce kullanılıyor
+```
+
+
 ## Yanıtlar
 
  - SQLRestriction Kullanımı ile
